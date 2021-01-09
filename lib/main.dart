@@ -8,11 +8,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Jodi',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Jodi'),
     );
   }
 }
@@ -26,14 +26,48 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  double _scaleFactor = 1.0;
+  final _textController = TextEditingController();
+  var _colorList = [
+    Colors.black,
+    Colors.white,
+    Colors.red,
+    Colors.green,
+    Colors.blue,
+    Colors.yellow,
+  ];
+  int _selectedColor = 1;
+  int _selectedBGColor = 0;
+  double _scaleFactor = 2.0;
   double _baseScaleFactor = 1.0;
+  bool isEdit = false;
 
-  void _incrementCounter() {
+  @override
+  void initState() {
+    super.initState();
+    _textController.text = 'Tap to edit';
+    // _textController.addListener(_printLatestValue);
+  }
+
+  // _printLatestValue() {
+  //   print("Second text field: ${_textController.text}");
+  // }
+
+  void _changeColor() {
     setState(() {
-      _counter++;
+      _selectedBGColor = (_selectedBGColor + 1) % (_colorList.length);
     });
+    setState(() {
+      if (_selectedColor == 0)
+        _selectedColor = 1;
+      else
+        _selectedColor = 0;
+    });
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
   }
 
   @override
@@ -47,23 +81,78 @@ class _MyHomePageState extends State<MyHomePage> {
           _scaleFactor = _baseScaleFactor * scaleDetails.scale;
         });
       },
+      onTap: () => setState(() => isEdit = !isEdit),
       child: Scaffold(
-        backgroundColor: Colors.red,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'You have pushed the button this many times:',
-                textScaleFactor: _scaleFactor,
+        backgroundColor: _colorList[_selectedBGColor],
+        body: Stack(
+          children: [
+            if (isEdit)
+              Stack(
+                alignment: Alignment.bottomCenter,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(16.0),
+                    color: Colors.black.withOpacity(0.5),
+                    child: Center(
+                      child: TextField(
+                        autofocus: true,
+                        textAlign: TextAlign.center,
+                        controller: _textController,
+                        style: TextStyle(color: Colors.white, fontSize: 24.0),
+                        decoration: InputDecoration(
+                            fillColor: Colors.white, border: InputBorder.none),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 16.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FlatButton(
+                          onPressed: () => setState(() => isEdit = !isEdit),
+                          child: Text('Done',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 20.0)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _incrementCounter,
-          tooltip: 'Increment',
-          child: Icon(Icons.create),
+            if (!isEdit)
+              SafeArea(
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    FlatButton(
+                        minWidth: 10,
+                        onPressed: _changeColor,
+                        child:
+                            //   Text('Color',
+                            //       style: TextStyle(
+                            //           color: _colorList[_selectedColor],
+                            //           fontSize: 16.0)),
+                            // )
+                            Icon(
+                          Icons.color_lens_outlined,
+                          color: _colorList[_selectedColor],
+                          size: 30.0,
+                        )),
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Text(
+                          '${_textController.text}',
+                          textScaleFactor: _scaleFactor,
+                          style: TextStyle(color: _colorList[_selectedColor]),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
         ),
       ),
     );
