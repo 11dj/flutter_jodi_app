@@ -12,15 +12,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Jodi'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -102,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Container(
                       padding: EdgeInsets.all(16.0),
-                      color: Colors.black.withOpacity(0.5),
+                      // color: Colors.black.withOpacity(0.5),
                       child: Center(
                         child: TextField(
                           keyboardType: TextInputType.multiline,
@@ -110,7 +107,9 @@ class _MyHomePageState extends State<MyHomePage> {
                           autofocus: true,
                           textAlign: TextAlign.center,
                           controller: _textController,
-                          style: TextStyle(color: Colors.white, fontSize: 24.0),
+                          style: TextStyle(
+                              color: _colorList[_selectedColor],
+                              fontSize: 24.0),
                           decoration: InputDecoration(
                               fillColor: Colors.white,
                               border: InputBorder.none),
@@ -126,7 +125,8 @@ class _MyHomePageState extends State<MyHomePage> {
                             onPressed: () => setState(() => isEdit = !isEdit),
                             child: Text('Done',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 20.0)),
+                                    color: _colorList[_selectedColor],
+                                    fontSize: 20.0)),
                           ),
                         ],
                       ),
