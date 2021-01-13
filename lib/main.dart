@@ -33,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Colors.yellow,
   ];
   int _selectedColor = 1;
-  int _selectedBGColor = 0;
+  int _selectedBGColor = 2;
   double _scaleFactor = 2.0;
   double _baseScaleFactor = 1.0;
   bool isEdit = false;
@@ -85,8 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       },
       onTap: () {
-        if (_textController.text == initText) _textController.text = '';
-        setState(() => isEdit = !isEdit);
+        _textController.selection = TextSelection(
+            baseOffset: 0, extentOffset: _textController.text.length);
+        setState(() => isEdit = true);
       },
       child: Scaffold(
         backgroundColor: _colorList[_selectedBGColor],
@@ -101,18 +102,22 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: EdgeInsets.all(16.0),
                       // color: Colors.black.withOpacity(0.5),
                       child: Center(
-                        child: TextField(
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          autofocus: true,
-                          textAlign: TextAlign.center,
-                          controller: _textController,
-                          style: TextStyle(
-                              color: _colorList[_selectedColor],
-                              fontSize: 24.0),
-                          decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              border: InputBorder.none),
+                        child: Hero(
+                          tag: 't1',
+                          transitionOnUserGestures: true,
+                          child: TextField(
+                            keyboardType: TextInputType.multiline,
+                            maxLines: null,
+                            autofocus: true,
+                            textAlign: TextAlign.center,
+                            controller: _textController,
+                            style: TextStyle(
+                                color: _colorList[_selectedColor],
+                                fontSize: 24.0),
+                            decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                border: InputBorder.none),
+                          ),
                         ),
                       ),
                     ),
@@ -165,10 +170,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: Container(
                         padding: EdgeInsets.all(16.0),
                         child: Center(
-                          child: Text(
-                            '${_textController.text}',
-                            textScaleFactor: _scaleFactor,
-                            style: TextStyle(color: _colorList[_selectedColor]),
+                          child: Hero(
+                            tag: 't1',
+                            transitionOnUserGestures: true,
+                            child: Text(
+                              '${_textController.text}',
+                              textScaleFactor: _scaleFactor,
+                              style:
+                                  TextStyle(color: _colorList[_selectedColor]),
+                            ),
                           ),
                         ),
                       ),
