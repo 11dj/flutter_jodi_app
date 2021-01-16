@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_admob/firebase_admob.dart';
+import './ad_manager.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,11 +41,28 @@ class _MyHomePageState extends State<MyHomePage> {
   bool isEdit = false;
   int _selectedRotate = 0;
   String initText = 'Tap to edit';
+  BannerAd _bannerAd;
 
   @override
   void initState() {
-    super.initState();
+    _initAdMob();
     _textController.text = initText;
+    _bannerAd = BannerAd(
+      adUnitId: AdManager.bannerAdUnitId,
+      size: AdSize.banner,
+    );
+    _loadBannerAd();
+    super.initState();
+  }
+
+  Future<void> _initAdMob() {
+    return FirebaseAdMob.instance.initialize(appId: AdManager.appId);
+  }
+
+  void _loadBannerAd() {
+    _bannerAd
+      ..load()
+      ..show(anchorType: AnchorType.top);
   }
 
   void _changeColor() {
@@ -70,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void dispose() {
     _textController.dispose();
+    _bannerAd.dispose();
     super.dispose();
   }
 
@@ -100,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Container(
                       padding: EdgeInsets.all(16.0),
-                      // color: Colors.black.withOpacity(0.5),
                       child: Center(
                         child: Hero(
                           tag: 't1',
