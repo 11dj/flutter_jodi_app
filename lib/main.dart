@@ -47,11 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _initAdMob();
     _textController.text = initText;
-    _bannerAd = BannerAd(
-      adUnitId: AdManager.bannerAdUnitId,
-      size: AdSize.banner,
-    );
-    _loadBannerAd();
+    // _bannerAd = BannerAd(
+    //   adUnitId: AdManager.bannerAdUnitId,
+    //   size: AdSize.banner,
+    // );
+    // _loadBannerAd();
     super.initState();
   }
 
@@ -60,9 +60,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void _loadBannerAd() {
+    _bannerAd = BannerAd(
+      adUnitId: AdManager.bannerAdUnitId,
+      size: AdSize.banner,
+    );
     _bannerAd
       ..load()
       ..show(anchorType: AnchorType.top);
+  }
+
+  void _stopBannerAd() {
+    _bannerAd?.dispose();
+    _bannerAd = null;
   }
 
   void _changeColor() {
@@ -108,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _textController.selection = TextSelection(
             baseOffset: 0, extentOffset: _textController.text.length);
         setState(() => isEdit = true);
+        _loadBannerAd();
       },
       child: Scaffold(
         backgroundColor: _colorList[_selectedBGColor],
@@ -146,7 +156,10 @@ class _MyHomePageState extends State<MyHomePage> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           FlatButton(
-                            onPressed: () => setState(() => isEdit = !isEdit),
+                            onPressed: () {
+                              setState(() => isEdit = !isEdit);
+                              _stopBannerAd();
+                            },
                             child: Text('Done',
                                 style: TextStyle(
                                     color: _colorList[_selectedColor],
