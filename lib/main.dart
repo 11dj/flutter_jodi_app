@@ -47,11 +47,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     _initAdMob();
     _textController.text = initText;
-    // _bannerAd = BannerAd(
-    //   adUnitId: AdManager.bannerAdUnitId,
-    //   size: AdSize.banner,
-    // );
-    // _loadBannerAd();
     super.initState();
   }
 
@@ -66,7 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
     _bannerAd
       ..load()
-      ..show(anchorType: AnchorType.top);
+      ..show(anchorType: AnchorType.top, anchorOffset: 24.0);
   }
 
   void _stopBannerAd() {

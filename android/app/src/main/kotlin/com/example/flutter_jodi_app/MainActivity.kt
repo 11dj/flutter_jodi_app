@@ -1,4 +1,4 @@
-package com.example.flutter_jodi_app
+package com.kittist.jodi
 
 import io.flutter.embedding.android.FlutterActivity
 
