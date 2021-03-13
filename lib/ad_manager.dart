@@ -2,6 +2,7 @@ import 'dart:io';
 
 class AdManager {
   static String get appId {
+    String mode = 'prod';
     var ids = {
       "test": {
         "android": "ca-app-pub-3940256099942544~4354546703",
@@ -13,15 +14,16 @@ class AdManager {
       },
     };
     if (Platform.isAndroid) {
-      return ids['test']['android'];
+      return ids[mode]['android'];
     } else if (Platform.isIOS) {
-      return ids['test']['ios'];
+      return ids[mode]['ios'];
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
   }
 
   static String get bannerAdUnitId {
+    String mode = 'prod';
     var bannerIds = {
       "test": {
         "android": "ca-app-pub-3940256099942544/8865242552",
@@ -33,9 +35,9 @@ class AdManager {
       },
     };
     if (Platform.isAndroid) {
-      return bannerIds['test']['android'];
+      return bannerIds[mode]['android'];
     } else if (Platform.isIOS) {
-      return bannerIds['test']['ios'];
+      return bannerIds[mode]['ios'];
     } else {
       throw new UnsupportedError("Unsupported platform");
     }
